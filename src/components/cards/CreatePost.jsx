@@ -40,7 +40,7 @@ const BottomText = styled.p`
 function CreatePost () {
   return (
     <PostContainer>
-      <H4><Title>What's in your mind, @nick?</Title></H4>
+      <H4><Title>What's in your mind, @username?</Title></H4>
       <TextContainer>
         <Textarea placeholder="Type something" rows="4"/>
       </TextContainer>
