@@ -32,7 +32,6 @@ const PostContainer = styled.div`
 `
 
 function HomePage () {
-  
   return (
     <>
       <Navbar />
