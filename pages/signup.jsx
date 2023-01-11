@@ -1,6 +1,10 @@
 import { useState } from "react"
 import styled from "styled-components"
 import Link from "next/link"
+import { useForm } from "react-hook-form"
+import { joiResolver } from "@hookform/resolvers/joi"
+
+import { signupSchema } from "../modules/user/user.schema"
 
 import ImageWithSpace from "../src/components/layout/ImageWithSpace"
 import H1 from "../src/components/typography/H1"
@@ -25,22 +29,15 @@ const Text = styled.p`
 `
 
 function SignupPage () {
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [user, setUser] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: joiResolver(signupSchema)
+  })
 
-  const handleForm = (event) => {
-    event.preventDefault()
-    console.log({
-      firstName,
-      lastName,
-      user,
-      email,
-      password
-    })
+  const handleForm = (data) => {
+    console.log(data)
   }
+
+  console.log(errors)
 
   return (
     <ImageWithSpace>
@@ -48,13 +45,13 @@ function SignupPage () {
       <H4>All things dev are here</H4>
       <FormContainer>
         <H2>Create your account</H2>
-        <Form onSubmit={handleForm}>
-          <Input label="First name" onChange={({ target }) => {setFirstName(target.value)}} />
-          <Input label="Last name" onChange={({ target }) => {setLastName(target.value)}} />
-          <Input label="User" onChange={(event) => {setUser(event.target.value)}} />
-          <Input label="Email" type="email" onChange={({ target }) => {setEmail(target.value)}} />
-          <Input label="Password" type="password" onChange={({ target }) => {setPassword(target.value)}} />
-          <Button>Sign up</Button>
+        <Form onSubmit={handleSubmit(handleForm)}>
+          <Input label="First name" {...register('firstName')} />
+          <Input label="Last name" {...register('lastName')} />
+          <Input label="User" {...register('user')} />
+          <Input label="Email" type="email" {...register('email')} />
+          <Input label="Password" type="password" {...register('password')} />
+          <Button type="submit">Sign up</Button>
         </Form>
         <Text>Are you a member already? <Link href="/login">Log in here.</Link></Text>
       </FormContainer>
