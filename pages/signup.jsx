@@ -37,8 +37,6 @@ function SignupPage () {
     console.log(data)
   }
 
-  console.log(errors)
-
   return (
     <ImageWithSpace>
       <H1># Social Dev</H1>
@@ -46,12 +44,12 @@ function SignupPage () {
       <FormContainer>
         <H2>Create your account</H2>
         <Form onSubmit={handleSubmit(handleForm)}>
-          <Input label="First name" {...register('firstName')} />
-          <Input label="Last name" {...register('lastName')} />
-          <Input label="User" {...register('user')} />
-          <Input label="Email" type="email" {...register('email')} />
-          <Input label="Password" type="password" {...register('password')} />
-          <Button type="submit">Sign up</Button>
+          <Input label="First name" {...register('firstName')} error={errors.firstName} />
+          <Input label="Last name" {...register('lastName')} error={errors.lastName} />
+          <Input label="User" {...register('user')} error={errors.user} />
+          <Input label="Email" type="email" {...register('email')} error={errors.email} />
+          <Input label="Password" type="password" {...register('password')} error={errors.password} />
+          <Button type="submit" disabled={Object.keys(errors).length > 0}>Sign up</Button>
         </Form>
         <Text>Are you a member already? <Link href="/login">Log in here.</Link></Text>
       </FormContainer>

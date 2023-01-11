@@ -18,13 +18,31 @@ const StyledInput = styled.input`
   padding: 15px 20px;
   box-sizing: border-box;
   border-radius: 10px;
+
+  ${props => props.error && `border: 2px solid ${props.theme.error};`}
+
+  &:focus {
+    outline: none;
+  }
 `
 
-const Input = forwardRef(({ label, ...props}, ref) => {
+const ErrorLabel = styled.span`
+  color: ${props => props.theme.error};
+  font-weight: bold;
+  font-size: 14px;
+`
+const errorMessage = {
+  'string.empty': 'This is a mandatory field',
+  'string.email': 'This is not a valid email'
+}
+
+const Input = forwardRef(({ label, error, ...props}, ref) => {
+  console.log(error)
   return (
     <InputContainer>
       <StyledLabel>{label}</StyledLabel>
-      <StyledInput placeholder={label} {...props} ref={ref} ></StyledInput>
+      <StyledInput placeholder={label} error={error} {...props} ref={ref} ></StyledInput>
+      {error && <ErrorLabel>{errorMessage[error.type] || error.message}</ErrorLabel>}
     </InputContainer>
   )
 })
