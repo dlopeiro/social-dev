@@ -37,10 +37,10 @@ const BottomText = styled.p`
   flex: 1;
 `
 
-function CreatePost () {
+function CreatePost ({ username} ) {
   return (
     <PostContainer>
-      <H4><Title>What's in your mind, @username?</Title></H4>
+      <H4><Title>What's in your mind, @{username}?</Title></H4>
       <TextContainer>
         <Textarea placeholder="Type something" rows="4"/>
       </TextContainer>
