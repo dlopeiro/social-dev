@@ -29,7 +29,7 @@ const Text = styled.p`
 `
 
 function SignupPage () {
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: joiResolver(signupSchema)
   })
 
@@ -44,11 +44,11 @@ function SignupPage () {
       <FormContainer>
         <H2>Create your account</H2>
         <Form onSubmit={handleSubmit(handleForm)}>
-          <Input label="First name" {...register('firstName')} error={errors.firstName} />
-          <Input label="Last name" {...register('lastName')} error={errors.lastName} />
-          <Input label="User" {...register('user')} error={errors.user} />
-          <Input label="Email" type="email" {...register('email')} error={errors.email} />
-          <Input label="Password" type="password" {...register('password')} error={errors.password} />
+          <Input label="First name" name="firstName" control={control} />
+          <Input label="Last name" name="lastName" control={control} />
+          <Input label="User" name="user" control={control} />
+          <Input label="Email" type="email" name="email" control={control} />
+          <Input label="Password" type="password" name="password" control={control} />
           <Button type="submit" disabled={Object.keys(errors).length > 0}>Sign up</Button>
         </Form>
         <Text>Are you a member already? <Link href="/login">Log in here.</Link></Text>
