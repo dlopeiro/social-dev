@@ -1,9 +1,9 @@
 import styled from "styled-components"
 import Link from "next/link"
-import { useForm } from "react-hook-form"
-import { joiResolver } from "@hookform/resolvers/joi"
-import axios from "axios"
-import { useRouter } from "next/router"
+import { useForm } from "react-hook-form" // used to create form
+import { joiResolver } from "@hookform/resolvers/joi" // used to validate form (avoid bad requests right in the frontend)
+import axios from "axios" // connect front to backend
+import { useRouter } from "next/router" // take user from login to access page
 
 import { signupSchema } from "../modules/user/user.schema"
 

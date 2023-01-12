@@ -9,3 +9,10 @@ export const signupSchema = Joi.object({
     .max(50).message('The password must contain up to {{#limit}} characters')
     .min(6).message('The password must contain at least {{#limit}} characters'),
 })
+
+export const loginSchema = Joi.object({
+  userOrEmail: Joi.string().required(),
+  password: Joi.string().required()
+    .max(50).message('The password must contain up to {{#limit}} characters')
+    .min(6).message('The password must contain at least {{#limit}} characters'),
+})

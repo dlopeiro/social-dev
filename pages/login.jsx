@@ -1,5 +1,11 @@
 import styled from "styled-components"
 import Link from "next/link"
+import { useForm } from "react-hook-form" // used to create form
+import { joiResolver } from "@hookform/resolvers/joi" // used to validate form (avoid bad requests right in the frontend)
+import axios from "axios" // connect front to backend
+import { useRouter } from "next/router" // take user from login to access page
+
+import { loginSchema } from "../modules/user/user.schema"
 
 import ImageWithSpace from "../src/components/layout/ImageWithSpace"
 import H1 from "../src/components/typography/H1"
@@ -24,16 +30,42 @@ const Text = styled.p`
 `
 
 function LoginPage () {
+  const router = useRouter()
+  
+  const { control, handleSubmit, formState: { errors }, setError } = useForm({
+    resolver: joiResolver(loginSchema)
+  })
+
+  const onSubmit = async (data) => {
+    try {
+      const { status } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, data)
+      if (status === 200) {
+        router.push('/')
+      }
+    } catch ({ response }) {
+      if (response.data === 'incorrect password') {
+        setError('password', {
+          message: 'The password is wrong'
+        })
+      }
+      else if (response.data === 'user not found') {
+        setError('userOrEmail', {
+          message: 'User or email not found'
+        })
+      }
+    }
+  }
+
   return (
     <ImageWithSpace>
       <H1># Social Dev</H1>
       <H4>All things dev are here</H4>
       <FormContainer>
         <H2>Log into your account</H2>
-        <Form>
-          <Input label="Email or user" type="email" />
-          <Input label="Password" type="password" />
-          <Button>Enter</Button>
+        <Form onSubmit={handleSubmit(onSubmit )}>
+          <Input label="Email or user" name="userOrEmail" control={control} />
+          <Input label="Password" type="password" name="password" control={control} />
+          <Button type="submit" disabled={Object.keys(errors).length > 0} >Enter</Button>
         </Form>
         <Text>Are you still not a member? <Link href="/signup">Sign up.</Link></Text>
       </FormContainer>
