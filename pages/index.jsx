@@ -51,9 +51,6 @@ function HomePage ({ user }) {
           <LastPostText>
             <H3>Latest posts:</H3>
           </LastPostText>
-          <RefreshPostsContainer>
-            <RefreshPosts>Load new posts</RefreshPosts>
-          </RefreshPostsContainer>
           <PostContainer>
             {
               data?.map(post =>

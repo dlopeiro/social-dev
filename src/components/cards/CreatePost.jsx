@@ -1,8 +1,15 @@
 import styled from "styled-components"
+import { useForm } from "react-hook-form"
+import { joiResolver } from "@hookform/resolvers/joi"
+import axios from "axios"
+import { useSWRConfig } from "swr"
+
+import { createPostSchema } from "../../../modules/post/post.schema"
 
 import H4 from "../typography/H4"
-import Textarea from "../inputs/TextArea"
+import ControllerTextarea from "../inputs/ControllerTextarea"
 import Button from "../inputs/Button"
+import useSWR from "swr"
 
 const PostContainer = styled.div`
   background-color: ${props => props.theme.white};
@@ -38,16 +45,32 @@ const BottomText = styled.p`
 `
 
 function CreatePost ({ username} ) {
+  const { mutate } = useSWRConfig()
+  const { control, handleSubmit, formState: { isValid }, reset } = useForm({
+    resolver: joiResolver(createPostSchema),
+    mode: 'all' // doesn't wait for the user to click on the button to check if data is valid, blocks form button until data is correct
+  })
+
+  const onSubmit = async (data) => {
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/post`, data)
+    if (response.status === 201) {
+      reset()
+      mutate(`${process.env.NEXT_PUBLIC_API_URL}/api/post`)
+    }
+  }
+
   return (
     <PostContainer>
       <H4><Title>What's in your mind, @{username}?</Title></H4>
-      <TextContainer>
-        <Textarea placeholder="Type something" rows="4"/>
-      </TextContainer>
-      <BottomContainer>
-        <BottomText>This message will be public</BottomText>
-        <Button>Send message</Button>
-      </BottomContainer>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TextContainer>
+          <ControllerTextarea placeholder="Type something" rows="4" control={control} name="text" maxLength="256" />
+        </TextContainer>
+        <BottomContainer>
+          <BottomText>This message will be public</BottomText>
+          <Button disabled={!isValid} >Send message</Button>
+        </BottomContainer>
+      </form>
     </PostContainer>
   )
 }
