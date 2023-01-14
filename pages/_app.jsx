@@ -1,4 +1,7 @@
+import { useEffect } from "react"
 import { createGlobalStyle, ThemeProvider } from "styled-components"
+import moment from "moment/moment"
+// import "moment/locale/pt-br"
 
 import theme from "../src/theme"
 
@@ -27,6 +30,10 @@ const GlobalStyle = createGlobalStyle`
 `
 
 function App ({ Component, pageProps }) {
+  // useEffect(() => {
+  //   moment.locale("pt-br") // this would translate the _date_ on the posts to Portuguese, but that's not what we want
+  // }, [])
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
