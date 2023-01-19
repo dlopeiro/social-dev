@@ -9,7 +9,6 @@ import { createPostSchema } from "../../../modules/post/post.schema"
 import H4 from "../typography/H4"
 import ControllerTextarea from "../inputs/ControllerTextarea"
 import Button from "../inputs/Button"
-import useSWR from "swr"
 
 const PostContainer = styled.div`
   background-color: ${props => props.theme.white};
