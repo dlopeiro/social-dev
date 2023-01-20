@@ -1,3 +1,4 @@
+import { useState } from "react"
 import styled from "styled-components"
 import Link from "next/link"
 import { useForm } from "react-hook-form" // used to create form
@@ -36,7 +37,10 @@ function LoginPage () {
     resolver: joiResolver(loginSchema)
   })
 
+  const [loading, setLoading] = useState(false)
+
   const onSubmit = async (data) => {
+    setLoading(true)
     try {
       const { status } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/login`, data)
       if (status === 200) {
@@ -53,6 +57,8 @@ function LoginPage () {
           message: 'User or email not found'
         })
       }
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -65,7 +71,7 @@ function LoginPage () {
         <Form onSubmit={handleSubmit(onSubmit )}>
           <Input label="Email or user" name="userOrEmail" control={control} />
           <Input label="Password" type="password" name="password" control={control} />
-          <Button loading type="submit" disabled={Object.keys(errors).length > 0} >Enter</Button>
+          <Button loading={loading} type="submit" disabled={Object.keys(errors).length > 0} >Enter</Button>
         </Form>
         <Text>Are you still not a member? <Link href="/signup">Sign up.</Link></Text>
       </FormContainer>
